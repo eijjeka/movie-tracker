@@ -8,33 +8,34 @@ export class Main extends Component {
     super();
     this.state = {
       movies: [],
-      type: "all",
+      loading: true,
     };
   }
 
   componentDidMount() {
     fetch(`http://www.omdbapi.com/?apikey=42956407&s=spider-man`)
       .then((response) => response.json())
-      .then((data) => this.setState({ movies: data.Search }));
+      .then((data) => this.setState({ movies: data.Search, loading: false }));
   }
 
   searchMovies = (value, type = "all") => {
+    this.setState({ loading: true });
     fetch(
       `http://www.omdbapi.com/?apikey=42956407&s=${value}&type=${
         type === "all" ? "" : `${type}`
       }`
     )
       .then((response) => response.json())
-      .then((data) => this.setState({ movies: data.Search }));
+      .then((data) => this.setState({ movies: data.Search, loading: false }));
   };
 
   render() {
-    const { movies } = this.state;
+    const { movies, loading } = this.state;
     return (
       <>
         <main className="container content">
           <Search searchMovies={this.searchMovies} />
-          {movies.length ? <Movies movies={movies} /> : <Preloader />}
+          {loading ? <Preloader /> : <Movies movies={movies} />}
         </main>
       </>
     );
