@@ -17,7 +17,11 @@ export class Main extends Component {
   componentDidMount() {
     fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=spider-man`)
       .then((response) => response.json())
-      .then((data) => this.setState({ movies: data.Search, loading: false }));
+      .then((data) => this.setState({ movies: data.Search }))
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(this.setState({ loading: false }));
   }
 
   searchMovies = (value, type = "all") => {
@@ -28,7 +32,11 @@ export class Main extends Component {
       }`
     )
       .then((response) => response.json())
-      .then((data) => this.setState({ movies: data.Search, loading: false }));
+      .then((data) => this.setState({ movies: data.Search }))
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(this.setState({ loading: false }));
   };
 
   render() {
